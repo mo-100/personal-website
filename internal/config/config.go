@@ -8,14 +8,16 @@ import (
 )
 
 type Config struct {
-	ServerPort string `envconfig:"SERVER_PORT"`
+	ServerPort string `envconfig:"SERVER_PORT" required:"true"`
 
-	DatabaseDriverName string `envconfig:"DATABASE_DRIVER_NAME"`
-	DatabaseUsername   string `envconfig:"DATABASE_USERNAME"`
-	DatabasePassword   string `envconfig:"DATABASE_PASSWORD"`
-	DatabaseName       string `envconfig:"DATABASE_NAME"`
-	DatabaseURL        string `envconfig:"DATABASE_URL"`
-	DatabasePort       string `envconfig:"DATABASE_PORT"`
+	Environment string `envconfig:"ENVIRONMENT" required:"true"`
+
+	DatabaseDriverName string `envconfig:"DATABASE_DRIVER_NAME" required:"true"`
+	DatabaseUsername   string `envconfig:"DATABASE_USERNAME" required:"true"`
+	DatabasePassword   string `envconfig:"DATABASE_PASSWORD" required:"true"`
+	DatabaseName       string `envconfig:"DATABASE_NAME" required:"true"`
+	DatabaseURL        string `envconfig:"DATABASE_URL" required:"true"`
+	DatabasePort       string `envconfig:"DATABASE_PORT" required:"true"`
 }
 
 func loadConfig() (*Config, error) {

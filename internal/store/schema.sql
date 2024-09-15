@@ -10,7 +10,7 @@ CREATE TABLE projects (
 );
 
 CREATE TABLE educations (
-  id BIGSERIAL,
+  id BIGSERIAL PRIMARY KEY,
   name text NOT NULL
 );
 

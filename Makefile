@@ -16,7 +16,7 @@ templ-watch:
 
 .PHONY: sqlc-build
 sqlc-build:
-	sqlc generate -f=internal/store/sqlc.json
+	sqlc generate -f=./internal/store/sqlc.json
 	
 .PHONY: dev
 dev:

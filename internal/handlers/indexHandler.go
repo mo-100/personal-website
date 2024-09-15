@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"personal/internal/store/db"
 	"personal/internal/templates"
@@ -17,7 +18,7 @@ func NewIndexHandler(queries *db.Queries) *IndexHandler {
 func (ih *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	projects, err := ih.queries.ListProjects(r.Context())
 	if err != nil {
-		http.Error(w, "Error getting projects", http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("Error getting projects: %v", err), http.StatusInternalServerError)
 		return
 	}
 	c := templates.Projects(projects)

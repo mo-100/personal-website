@@ -12,8 +12,8 @@ import (
 )
 
 func main() {
-	config := config.MustLoadConfig()
-	conn := db_utils.MustOpen(config)
+	cfg := config.MustLoadConfig()
+	conn := db_utils.GetDB(cfg)
 	defer conn.Close()
 	queries := db.New(conn)
 
@@ -28,7 +28,7 @@ func main() {
 	r = middleware.CSPMiddleware(r)
 	r = middleware.Logger(r)
 
-	log.Printf("site running on port %s...\n", config.ServerPort)
-	err := http.ListenAndServe(fmt.Sprintf(":%s", config.ServerPort), r)
+	log.Printf("site running on port %s...\n", cfg.ServerPort)
+	err := http.ListenAndServe(fmt.Sprintf(":%s", cfg.ServerPort), r)
 	log.Panic(err)
 }

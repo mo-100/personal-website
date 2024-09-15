@@ -1,6 +1,8 @@
 *_templ.go
 bin
-.vscode
 tmp
-internal/store/db
+
+.vscode
+.idea
+
 .env
