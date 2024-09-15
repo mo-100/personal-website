@@ -1,0 +1,22 @@
+package templates
+
+import (
+	"fmt"
+	"personal/internal/store/db"
+)
+
+templ Projects(projects []db.Project) {
+	<ul>
+		for _, p := range projects {
+			@ProjectCard(p)
+		}
+	</ul>
+}
+
+templ ProjectCard(project db.Project) {
+	<div>
+		<div>ID: { fmt.Sprintf("%d", project.ID) }</div>
+		<div>Name: { project.Name }</div>
+		<div>Description: { project.Description }</div>
+	</div>
+}

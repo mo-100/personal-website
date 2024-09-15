@@ -1,0 +1,6 @@
+*_templ.go
+bin
+.vscode
+tmp
+internal/store/db
+.env
