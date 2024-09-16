@@ -28,6 +28,50 @@ func (q *Queries) GetInfo(ctx context.Context) (Userinfo, error) {
 	return i, err
 }
 
+const getProjectsWSkills = `-- name: GetProjectsWSkills :many
+SELECT 
+  projects.id, projects.name, projects.description,
+  skills.id, skills.name
+FROM projects
+INNER JOIN projects_skills on projects.id = projects_skills.p_id
+INNER JOIN skills on skills.id = projects_skills.s_id
+ORDER BY projects.id
+`
+
+type GetProjectsWSkillsRow struct {
+	Project Project
+	Skill   Skill
+}
+
+func (q *Queries) GetProjectsWSkills(ctx context.Context) ([]GetProjectsWSkillsRow, error) {
+	rows, err := q.db.QueryContext(ctx, getProjectsWSkills)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetProjectsWSkillsRow
+	for rows.Next() {
+		var i GetProjectsWSkillsRow
+		if err := rows.Scan(
+			&i.Project.ID,
+			&i.Project.Name,
+			&i.Project.Description,
+			&i.Skill.ID,
+			&i.Skill.Name,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listLanguages = `-- name: ListLanguages :many
 SELECT name
 FROM languages

@@ -13,6 +13,7 @@ INSERT INTO projects (id, name, description) VALUES
 INSERT INTO projects_skills (p_id, s_id) VALUES
 (1, 1),  -- Website Development uses JavaScript
 (2, 2),  -- Data Analysis uses Python
+(2, 3),  -- Data Analysis uses SQL
 (3, 3);  -- Database Design uses SQL
 
 

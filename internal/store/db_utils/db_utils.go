@@ -16,8 +16,14 @@ func GetDB(config *config.Config) *sql.DB {
 		return mustOpen(config.DatabaseDriverName, getConnectionString(config))
 	}
 	conn := mustOpen("sqlite", ":memory:")
-	runFile(conn, "internal/store/schema.sql")
-	runFile(conn, "internal/store/gen.sql")
+	err := runFile(conn, "./internal/store/schema.sql")
+	if err != nil {
+		log.Panic(err)
+	}
+	err = runFile(conn, "./internal/store/gen.sql")
+	if err != nil {
+		log.Panic(err)
+	}
 	return conn
 }
 func mustOpen(driver, dst string) *sql.DB {
@@ -36,13 +42,14 @@ func getConnectionString(config *config.Config) string {
 		config.DatabaseName,
 	)
 }
-func runFile(conn *sql.DB, path string) {
+func runFile(conn *sql.DB, path string) error {
 	sqlText, err := os.ReadFile(path)
 	if err != nil {
-		log.Panic(err)
+		return err
 	}
 	_, err = conn.Exec(string(sqlText))
 	if err != nil {
-		log.Panic(err)
+		return err
 	}
+	return nil
 }

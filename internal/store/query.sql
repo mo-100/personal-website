@@ -21,3 +21,12 @@ FROM languages;
 SELECT *
 FROM userinfo
 limit 1;
+
+-- name: GetProjectsWSkills :many
+SELECT 
+  sqlc.embed(projects),
+  sqlc.embed(skills)
+FROM projects
+INNER JOIN projects_skills on projects.id = projects_skills.p_id
+INNER JOIN skills on skills.id = projects_skills.s_id
+ORDER BY projects.id;
