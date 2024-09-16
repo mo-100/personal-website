@@ -1,42 +1,23 @@
-.PHONY: tailwind-watch
-tailwind-watch:
-	./tailwindcss -i ./static/css/input.css -o ./static/css/style.css --watch
-
-.PHONY: tailwind-build
-tailwind-build:
-	tailwindcss -i ./static/css/input.css -o ./static/css/style.min.css --minify
+.PHONY: sqlc-generate
+sqlc-generate:
+	sqlc generate -f=./internal/store/sqlc.json
 
 .PHONY: templ-generate
 templ-generate:
 	templ generate
 
-.PHONY: templ-watch
-templ-watch:
-	templ generate --watch
-
-.PHONY: sqlc-build
-sqlc-build:
-	sqlc generate -f=./internal/store/sqlc.json
-	
-.PHONY: dev
-dev:
-	go build -o ./tmp/$(APP_NAME) ./cmd/$(APP_NAME)/main.go && air
+.PHONY: tailwind-build
+tailwind-build:
+	tailwindcss -i ./static/css/input.css -o ./static/css/style.min.css --minify
 
 .PHONY: build
 build:
-	make sqlc-build
+	make sqlc-generate
 	make tailwind-build
 	make templ-generate
-	go build -ldflags "-X main.Environment=production" -o ./bin/$(APP_NAME) ./cmd/$(APP_NAME)/main.go
+	go build -o tmp/main.exe ./cmd
 
-.PHONY: vet
-vet:
-	go vet ./...
-
-.PHONY: staticcheck
-staticcheck:
-	staticcheck ./...
-
-.PHONY: test
-test:
-	  go test -race -v -timeout 30s ./...
+.PHONY: dev
+dev:
+	make build
+	air

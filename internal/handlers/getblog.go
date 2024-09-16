@@ -15,7 +15,7 @@ func NewBlogHandler(queries *db.Queries) *BlogHandler {
 }
 
 func (handler *BlogHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	err := templates.Layout(nil, "Index").Render(r.Context(), w)
+	err := templates.Layout(templates.Empty(), "Index").Render(r.Context(), w)
 	if err != nil {
 		http.Error(w, "Error rendering template", http.StatusInternalServerError)
 		return

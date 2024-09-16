@@ -17,13 +17,13 @@ func NewIndexHandler(queries *db.Queries) *IndexHandler {
 }
 
 func (handler *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	projects_skills, err := handler.queries.GetProjectsWSkills(r.Context())
+	projectsSkills, err := handler.queries.GetProjectsWSkills(r.Context())
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error getting projects: %v", err), http.StatusInternalServerError)
 		return
 	}
-	p := utils.Map(projects_skills, func(x db.GetProjectsWSkillsRow) db.Project { return x.Project })
-	s := utils.Map(projects_skills, func(x db.GetProjectsWSkillsRow) db.Skill { return x.Skill })
+	p := utils.Map(projectsSkills, func(x db.GetProjectsWSkillsRow) db.Project { return x.Project })
+	s := utils.Map(projectsSkills, func(x db.GetProjectsWSkillsRow) db.Skill { return x.Skill })
 
 	p2, s2 := utils.GetOneToMany(p, s, func(x db.Project) string { return string(x.ID) })
 
