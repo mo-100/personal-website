@@ -1,0 +1,7 @@
+package templates
+
+import "personal/internal/store/db"
+
+templ CV(projects []db.Project, skills [][]db.Skill) {
+	@Projects(projects, skills)
+}

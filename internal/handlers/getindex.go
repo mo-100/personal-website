@@ -1,11 +1,9 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"personal/internal/store/db"
 	"personal/internal/templates"
-	"personal/internal/utils"
 )
 
 type IndexHandler struct {
@@ -17,18 +15,7 @@ func NewIndexHandler(queries *db.Queries) *IndexHandler {
 }
 
 func (handler *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	projectsSkills, err := handler.queries.GetProjectsWSkills(r.Context())
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Error getting projects: %v", err), http.StatusInternalServerError)
-		return
-	}
-	p := utils.Map(projectsSkills, func(x db.GetProjectsWSkillsRow) db.Project { return x.Project })
-	s := utils.Map(projectsSkills, func(x db.GetProjectsWSkillsRow) db.Skill { return x.Skill })
-
-	p2, s2 := utils.GetOneToMany(p, s, func(x db.Project) string { return string(x.ID) })
-
-	c := templates.Projects(p2, s2)
-	err = templates.Layout(c, "Index").Render(r.Context(), w)
+	err := templates.Layout(templates.Home(), "Home").Render(r.Context(), w)
 	if err != nil {
 		http.Error(w, "Error rendering template", http.StatusInternalServerError)
 		return

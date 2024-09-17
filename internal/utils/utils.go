@@ -1,23 +1,24 @@
 package utils
 
-func GetOneToMany[T, V any](items []T, subitems []V, get_id func(T) string) ([]T, [][]V) {
-	if len(items) == 0 {
-		return []T{}, [][]V{}
-	}
+func GetOneToMany[T, V any, K comparable](items []T, subitems []V, getId func(T) K) ([]T, [][]V) {
+	// maps each elements id to its index
+	id_map := make(map[K]int)
 
-	idx := -1
-	t_list := []T{}
-	v_list := [][]V{}
-	for i, t := range items {
-		if i == 0 || get_id(t) != get_id(t_list[idx]) {
-			idx += 1
-			v_list = append(v_list, []V{subitems[i]})
-			t_list = append(t_list, t)
+	items_result := []T{}
+	subitems_result := [][]V{}
+	for i, item := range items {
+		cur_idx, found := id_map[getId(item)]
+		if found {
+			// if the item is in the map then find its index and add child to its index
+			subitems_result[cur_idx] = append(subitems_result[cur_idx], subitems[i])
 		} else {
-			v_list[idx] = append(v_list[idx], subitems[i])
+			// if the item is not in the map then add it and append it to the results
+			id_map[getId(item)] = len(items_result)
+			items_result = append(items_result, items[i])
+			subitems_result = append(subitems_result, []V{subitems[i]})
 		}
 	}
-	return t_list, v_list
+	return items_result, subitems_result
 }
 
 func Map[T, V any](items []T, f func(T) V) []V {

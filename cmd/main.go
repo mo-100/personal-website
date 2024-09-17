@@ -23,14 +23,10 @@ func main() {
 		http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	mux.HandleFunc("/", handlers.NewIndexHandler(queries).ServeHTTP)
-	mux.HandleFunc("/blog", handlers.NewBlogHandler(queries).ServeHTTP)
 	mux.HandleFunc("/cv", handlers.NewCVHandler(queries).ServeHTTP)
 	mux.HandleFunc("/contactme", handlers.NewContactHandler(queries).ServeHTTP)
-	mux.HandleFunc("/portfolio", handlers.NewPortfolioHandler(queries).ServeHTTP)
 
-	r := middleware.TextHTMLMiddleware(mux)
-	r = middleware.CSPMiddleware(r)
-	r = middleware.Logger(r)
+	r := middleware.Logger(mux)
 
 	log.Printf("site running on port %s...\n", cfg.ServerPort)
 	err := http.ListenAndServe(fmt.Sprintf(":%s", cfg.ServerPort), r)

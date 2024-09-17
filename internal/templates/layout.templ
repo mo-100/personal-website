@@ -1,15 +1,11 @@
 package templates
 
-import "personal/internal/middleware"
-
 templ head(title string) {
 	<head>
-		<title>{ title }</title>
+		<title>Mohammed Alageel - { title }</title>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<link rel="stylesheet" href="static/css/style.min.css" nonce={ middleware.GetTwNonce(ctx) }/>
-		<script src="static/script/htmx.min.js" nonce={ middleware.GetHtmxNonce(ctx) }></script>
-		<script src="static/script/response-targets.js" nonce={ middleware.GetResponseTargetsNonce(ctx) }></script>
+		<link rel="stylesheet" href="static/css/style.min.css"/>
 	</head>
 }
 
@@ -19,11 +15,9 @@ templ footer() {
 
 templ nav() {
 	<nav class="bg-blue-600 p-4">
-		<a class="text-gray-200" href="/">Home </a>
-		<a class="text-gray-200" href="/cv">Resume </a>
-		<a class="text-gray-200" href="/portfolio">Portfolio </a>
-		<a class="text-gray-200" href="/blog">Blog </a>
-		<a class="text-gray-200" href="/contactme">Contact me </a>
+		<a class="text-gray-200 mr-4" href="/">Home </a>
+		<a class="text-gray-200 mr-4" href="/cv">CV </a>
+		<a class="text-gray-200 mr-4" href="/contactme">Contact me </a>
 	</nav>
 }
 

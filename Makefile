@@ -15,7 +15,7 @@ build:
 	make sqlc-generate
 	make tailwind-build
 	make templ-generate
-	go build -o tmp/main.exe ./cmd
+	go build -o tmp/main ./cmd
 
 .PHONY: dev
 dev:
